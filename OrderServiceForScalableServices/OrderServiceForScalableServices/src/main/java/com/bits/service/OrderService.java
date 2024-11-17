@@ -11,20 +11,22 @@ public class OrderService {
     public boolean placeOrder(OrderDTO orderDTO){
 
         //rest call to user service for user details
-
+        String userId= orderDTO.getUserId();
+        UserDTO userDTO= getUserInfo(userId);
 
 
         //rest call to product service for product details
-
+        String productId= orderDTO.getProductId();
+        ProductDTO productDTO= getProductInfo(productId);
 
         return true;
     }
 
-    private UserDTO getUserInfo(){
+    private UserDTO getUserInfo(String UserId){
         return new UserDTO();
     }
 
-    private ProductDTO getProductInfo(){
+    private ProductDTO getProductInfo(String productId){
         return new ProductDTO();
     }
 
