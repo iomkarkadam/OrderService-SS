@@ -36,4 +36,13 @@ public class OrderDTO {
     public void setProductId(String productId) {
         this.productId = productId;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "pincode='" + pincode + '\'' +
+                ", userId='" + userId + '\'' +
+                ", productId='" + productId + '\'' +
+                '}';
+    }
 }

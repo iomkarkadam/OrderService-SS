@@ -5,6 +5,7 @@ import com.bits.model.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class OrderRESTService {
     private static final Logger log = LoggerFactory.getLogger(OrderRESTService.class);
+
     private final RestTemplate restTemplate;
 
     @Value("${user.service.url}")
@@ -31,7 +33,7 @@ public class OrderRESTService {
     }
 
     public ProductDTO getProductDetails(Long productId) {
-        String url = userServiceUrl + "/products/" + productId;
+        String url = productServiceUrl + "/products/" + productId;
         return restTemplate.getForObject(url, ProductDTO.class);
     }
 }

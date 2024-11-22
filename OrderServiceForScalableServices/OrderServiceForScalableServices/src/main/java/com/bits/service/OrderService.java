@@ -1,8 +1,10 @@
 package com.bits.service;
 
+import com.bits.entity.Order;
 import com.bits.model.OrderDTO;
 import com.bits.model.ProductDTO;
 import com.bits.model.UserDTO;
+import com.bits.repo.OrderRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,9 @@ public class OrderService {
     @Autowired
     OrderRESTService orderRESTService;
 
+    @Autowired
+    OrderRepo orderRepo;
+
     public boolean placeOrder(OrderDTO orderDTO){
 
         //rest call to user service for user details
@@ -31,16 +36,33 @@ public class OrderService {
         ProductDTO productDTO= getProductInfo(productId);
         log.info("product  details fetched from REST call: "+productDTO );
 
+
+        //save order info
+        Order order= new Order();
+        order.setProductName(productDTO.getProductName());
+        order.setProductPrice(Integer.parseInt(productDTO.getProductPrice()));
+        order.setUserName(userDTO.getUserName());
+        order.setUserId(Long.valueOf(userId));
+        order.setPincode(userDTO.getPincode());
+
+        orderRepo.save(order);
+
+        System.out.println("New order saved: "+ order);
+
         return true;
     }
 
     private UserDTO getUserInfo(String userId){
         UserDTO userDTO= orderRESTService.getUserDetails(Long.valueOf(userId));
+        log.info("user info fetched from REST call: "+ userDTO);
+        System.out.println("user info fetched from REST call: with name: "+ userDTO.getUserName()+ "user pincode: "+ userDTO.getPincode());
         return userDTO;
     }
 
     private ProductDTO getProductInfo(String productId){
         ProductDTO productDTO= orderRESTService.getProductDetails(Long.valueOf(productId));
+        log.info("product info fetched from REST call: "+ productDTO);
+        System.out.println("product info fetched from REST call: productName: "+ productDTO.getProductName()+ "Product Price: "+ productDTO.getProductPrice());
         return productDTO;
     }
 
